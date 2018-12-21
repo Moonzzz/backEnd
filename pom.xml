@@ -19,7 +19,7 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <!-- spring版本号 -->
-        <spring.version>4.3.17.RELEASE</spring.version>
+        <spring.version>4.3.18.RELEASE</spring.version>
         <!-- mybatis版本号 -->
         <mysql.version>8.0.13</mysql.version>
         <mybatis.version>3.3.0</mybatis.version>
