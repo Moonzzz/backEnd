@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"spring_mvc.xml","classpath:appContext.xml"})
+@ContextConfiguration(locations = {"classpath:spring_mvc.xml","classpath:appContext.xml"})
 public class test{
     @Autowired
     SqlSessionFactory sqlSessionFactory;
