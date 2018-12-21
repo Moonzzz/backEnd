@@ -11,6 +11,6 @@ public class ServletTest {
 
     @RequestMapping(value = "servletTest.action",method = RequestMethod.GET)
     public void test(PrintWriter out){
-        out.print("success!");
+        out.print("success！呵呵呵");
     }
 }
