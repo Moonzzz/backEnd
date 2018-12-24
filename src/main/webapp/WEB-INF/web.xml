@@ -12,8 +12,8 @@
     <param-value>true</param-value>
   </context-param>
   <!--ssas-->
-<!--  <filter>
-    <filter-name>CharacterEncodingFilter</filter-name>
+  <!--<filter>
+    <filter-name>CharacterEncodingFilter1</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <init-param>
       <param-name>encoding</param-name>
@@ -21,7 +21,7 @@
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-name>CharacterEncodingFilter1</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>-->
   <listener>

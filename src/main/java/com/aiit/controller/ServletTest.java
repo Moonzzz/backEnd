@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ServletTest {
 
-    @RequestMapping(value = "servletTest.action",method = RequestMethod.GET)
+    @RequestMapping(value = "servletTest.action",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String test(){
-      //  out.print("success！呵呵呵");
         return "呵呵呵";
     }
 }

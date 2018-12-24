@@ -103,7 +103,7 @@
         <div class="layui-form-item">
             <label for="L_repass" class="layui-form-label">
             </label>
-            <button class="layui-btn" lay-filter="add" lay-submit="">
+            <button type="submit" class="layui-btn" lay-filter="add" lay-submit="">
                 确认修改
             </button>
         </div>
@@ -136,7 +136,7 @@
             ,phone:[/^[1][3,4,5,7,8][0-9]{9}$/, '手机号码格式有误，请重新输入']
         });
 
-        //监听提交
+       /* //监听提交
         form.on('submit()', function (data) {
             console.log(data);
             //发异步，把数据提交给php
@@ -147,7 +147,7 @@
                 parent.layer.close(index);
             });
             return false;
-        });
+        });*/
 
 
     });
