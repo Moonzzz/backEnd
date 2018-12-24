@@ -8,7 +8,7 @@
     <context:component-scan base-package="com.aiit.controller"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <constructor-arg name="prefix" value="/WEB-INF/pages"/>
+        <constructor-arg name="prefix" value="/pages/"/>
         <constructor-arg name="suffix" value=".jsp"/>
     </bean>
     <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>

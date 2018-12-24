@@ -24,7 +24,7 @@
 
 <body>
 <div class="x-body">
-    <form class="layui-form" action="<%=basePath%>/member/update.action">
+    <form class="layui-form" action="<%=basePath%>member/update.action">
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
                 <span class="x-red">*</span>邮箱
