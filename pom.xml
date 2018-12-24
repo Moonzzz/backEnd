@@ -194,7 +194,18 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
-
+        <!--邮件-->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        <!--邮件Spring依赖-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.2.6.RELEASE</version>
+        </dependency>
         <!--EL表达式-->
         <dependency>
             <groupId>taglibs</groupId>
