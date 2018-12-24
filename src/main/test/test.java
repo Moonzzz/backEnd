@@ -1,5 +1,3 @@
-package com.aiit.test;
-
 import com.aiit.dao.DaoTest;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
