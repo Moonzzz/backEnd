@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:spring_*.xml")
+@ContextConfiguration(locations = "classpath*:spring/spring_*.xml")
 public class PostServiceTest {
     @Autowired
     IPostService postService;
@@ -50,7 +50,6 @@ public class PostServiceTest {
         Timestamp date = new Timestamp(System.currentTimeMillis());
         Post post = new Post(2L, "bbb", "Ccc", date);
         post.setId(2L);
-       // post.setDateLastModified(new Timestamp(System.currentTimeMillis()));
         boolean isDone = postService.updatePost(post);
         System.out.println(isDone);
     }

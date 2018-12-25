@@ -15,8 +15,12 @@ import java.util.Map;
  */
 @Service
 public class PostServiceImpl implements IPostService {
+    private final IPostDao postDao;
+
     @Autowired
-    private IPostDao postDao;
+    public PostServiceImpl(IPostDao postDao) {
+        this.postDao = postDao;
+    }
 
     @Override
     public List<Post> getList(int pageNo, int pageSize, String method) {
