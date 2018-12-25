@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.TimeZone;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:spring_*.xml")
@@ -25,8 +26,8 @@ public class PostServiceTest {
 
     @Test
     public void getPostByTitleTest() {
-        List<Post> list = postService.getListByTitle("a");
-        System.out.println(list.size());
+        List<Post> list = postService.getListByTitle("b");
+        System.out.println(list.get(0));
     }
 
     @Test
@@ -35,6 +36,23 @@ public class PostServiceTest {
         Post post = new Post(2L, "bbb", "bbb", date);
         boolean isDone = postService.addPost(post);
         System.out.println(isDone+"----id:"+post.getId());
+    }
+
+    @Test
+    public void deletePostTest(){
+        boolean isDone = postService.deletePost(3L);
+        System.out.println(isDone);
+    }
+    @Test
+    public void updatePostTest(){
+        TimeZone timeZone = TimeZone.getDefault();
+        System.out.println(timeZone);
+        Timestamp date = new Timestamp(System.currentTimeMillis());
+        Post post = new Post(2L, "bbb", "Ccc", date);
+        post.setId(2L);
+       // post.setDateLastModified(new Timestamp(System.currentTimeMillis()));
+        boolean isDone = postService.updatePost(post);
+        System.out.println(isDone);
     }
 
 }

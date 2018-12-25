@@ -6,7 +6,7 @@
     <context:component-scan base-package="com.aiit.pojo"/>
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/film?useSSL=false&amp;serverTimezone=UTC"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/film?useSSL=false&amp;serverTimezone=Asia/Shanghai"/>
         <property name="user" value="root"/>
         <property name="password" value="123456"/>
         <!-- c3p0连接池的私有属性 -->
