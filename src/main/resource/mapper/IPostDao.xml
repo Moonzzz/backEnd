@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.aiit.dao.IPostDao">
+    <select id="list" resultType="com.aiit.pojo.Post">
+        SELECT * FROM post
+        <if test="pageNo*pageSize>5000">
+            WHERE id >=(select id from post order by #{method} LIMIT #{pageNo}*#{pageSize},1)
+        </if>
+        ORDER BY #{method}
+        limit #{pageSize}
+    </select>
+    <update id="update" parameterType="com.aiit.pojo.PostDTO">
+        UPDATE post
+        <set>
+            <if test="memberId!=null">memberId=#{memberId},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="content!=null">content=#{content},</if>
+            <if test="datePublished!=null">datePublished=#{datePublished},</if>
+            <if test="dateLastModified!=null">dateLastModified=#{dateLastModified}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
