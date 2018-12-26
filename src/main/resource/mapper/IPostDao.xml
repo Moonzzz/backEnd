@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 命名空间用于查找 -->
 <mapper namespace="com.aiit.dao.IPostDao">
-    <select id="list" resultType="com.aiit.pojo.Post">
+    <select id="selectList" resultType="com.aiit.pojo.Post">
         SELECT * FROM post
         <if test="pageNo*pageSize>5000">
             WHERE id >=(select id from post order by #{method} LIMIT #{pageNo}*#{pageSize},1)
