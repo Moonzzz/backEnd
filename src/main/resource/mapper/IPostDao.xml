@@ -6,11 +6,16 @@
 <mapper namespace="com.aiit.dao.IPostDao">
     <select id="selectList" resultType="com.aiit.pojo.Post">
         SELECT * FROM post
-        <if test="pageNo*pageSize>5000">
-            WHERE id >=(select id from post order by #{method} LIMIT #{pageNo}*#{pageSize},1)
+        <if test="offset>max">
+            WHERE id >=(select id from post order by #{method} LIMIT #{offset},1)
+            ORDER BY #{method}
+            LIMIT #{pageSize}
         </if>
-        ORDER BY #{method}
-        limit #{pageSize}
+        <if test="!(offset>max)">
+            ORDER BY #{method}
+            LIMIT #{offset},#{pageSize}
+        </if>
+
     </select>
     <update id="update" parameterType="com.aiit.pojo.PostDTO">
         UPDATE post

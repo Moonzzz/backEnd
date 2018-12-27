@@ -62,4 +62,11 @@ public interface IPostDao {
     @Insert("insert into post values(#{id},#{memberId},#{title},#{content},#{datePublished},#{dateLastModified});")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     int insert(Post post);
+
+    /**
+     * 返回总记录数
+     * @return 总记录数
+     */
+    @Select("select count(id) from post")
+    int count();
 }

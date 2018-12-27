@@ -20,8 +20,8 @@ public class PostServiceTest {
 
     @Test
     public void getListTest() {
-        List<Post> list = postService.getList(1, 10, "id");
-        System.out.println(list.size());
+        String listJson = postService.getList(1, 10, "id");
+        System.out.println(listJson);
     }
 
     @Test
