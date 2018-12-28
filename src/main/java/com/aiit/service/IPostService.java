@@ -16,7 +16,7 @@ public interface IPostService {
      * @param method   排序方法
      * @return post集合
      */
-    List<Post> getList(int pageNo, int pageSize, String method);
+    String getList(int pageNo, int pageSize, String method);
 
     /**
      * 按标题查找

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,8 +37,16 @@ public class test {
     @Test
     public void daoTest() {
         daoTest.daoTest();
-        List<Post> list = postService.getList(1, 10, "id");
-        System.out.println(list.size());
+        String listJson = postService.getList(1, 10, "id");
+        System.out.println(listJson);
+    }
+
+    @Test
+    public void addPost(){
+        for(int i=3;i<100;i++){
+            Post post = new Post(2L,"test"+i,"context"+i,new Timestamp(System.currentTimeMillis()));
+            postDao.insert(post);
+        }
     }
 
 }
