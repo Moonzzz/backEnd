@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+
+
+    <!-- 查询所有记录 -->
+    <select id="selectAll" resultType="com.aiit.pojo.Actor">
+        SELECT * from recycleactor LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(id) from recycleactor
+    </select>
+    <delete id="deleteOne">
+        delete from recycleactor where recycleactor.id=#{id}
+    </delete>
+    <insert id="revocationOne">
+        insert into actor(id,name,url) select id,name,url from recycleactor where recycleactor.id=#{id}
+    </insert>
+</mapper>

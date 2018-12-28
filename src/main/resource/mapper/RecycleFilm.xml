@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+
+
+    <!-- 查询所有记录 -->
+    <select id="selectAllFlim" resultType="com.aiit.pojo.Film">
+        SELECT * FROM recyclefilm LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectFilmCount" resultType="java.lang.Integer">
+        SELECT count(*) from recyclefilm
+    </select>
+    <delete id="deleteOneFilm">
+        delete from recyclefilm where recyclefilm.id=#{id}
+    </delete>
+    <insert id="revocationFilms">
+        insert into film(id,fNo,name,url,image,datePublished,description) select id,fNo,name,url,image,datePublished,description from recyclefilm where recyclefilm.id=#{id}
+    </insert>
+</mapper>

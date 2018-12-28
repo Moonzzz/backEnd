@@ -23,6 +23,7 @@ public class Post {
     private String title;
     @NonNull
     private String content;
+    private  Integer likeNum;
     @NonNull
     private Timestamp datePublished;
     private Timestamp dateLastModified;

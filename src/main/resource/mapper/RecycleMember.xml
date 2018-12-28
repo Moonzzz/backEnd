@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+    <!-- 查询所有记录 -->
+    <select id="selectAllMember" resultType="com.aiit.pojo.Member">
+        SELECT * from recyclemember LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectMemberCount" resultType="java.lang.Integer">
+        SELECT count(*) from recyclemember
+    </select>
+    <delete id="deleteOneMember">
+        delete from recyclemember where recyclemember.id=#{id}
+    </delete>
+    <insert id="revocationMembers">
+        insert into member(id,LoginName,password,sex,phonenum,email,birthday,joindate,xpvalue,imgsrc) select id,LoginName,password,sex,phonenum,email,birthday,joindate,xpvalue,imgsrc from recyclemember where recyclemember.id=#{id}
+    </insert>
+</mapper>

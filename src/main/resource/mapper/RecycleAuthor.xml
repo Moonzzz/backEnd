@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+
+
+    <!-- 查询所有记录 -->
+    <select id="selectAllAuthor" resultType="com.aiit.pojo.Author">
+        SELECT * from recycleauthor LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectAuthorCount" resultType="java.lang.Integer">
+        SELECT count(*) from recycleauthor
+    </select>
+    <delete id="deleteOneAuthor">
+        delete from recycleauthor where recycleauthor.id=#{id}
+    </delete>
+    <insert id="revocationAuthors">
+        insert into author(id,name,url) select id,name,url from recycleauthor where recycleauthor.id=#{id}
+    </insert>
+</mapper>

@@ -17,6 +17,7 @@ public class PostDTO {
     private Long memberId;
     private String title;
     private String content;
+    private Integer likeNum;
     private Timestamp datePublished;
     private Timestamp dateLastModified;
 }

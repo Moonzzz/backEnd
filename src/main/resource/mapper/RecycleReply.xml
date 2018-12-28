@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+
+
+    <!-- 查询所有记录 -->
+    <select id="selectReplyAll" resultType="com.aiit.pojo.Reply">
+        SELECT * FROM recyclereply LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectReplyCount" resultType="java.lang.Integer">
+        SELECT count(id) from recyclereply
+    </select>
+    <delete id="deleteOneReply">
+        delete from recyclereply where recyclereply.id=#{id}
+    </delete>
+    <insert id="revocationReplys">
+        insert into reply(id,memberId,content,likeNum,datePublished) select id,memberId,content,likeNum,datePublished from recyclereply where recyclereply.id=#{id}
+    </insert>
+</mapper>

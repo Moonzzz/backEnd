@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+
+
+    <!-- 查询所有记录 -->
+    <select id="selectAllDirector" resultType="com.aiit.pojo.Director">
+        SELECT * from recycledirector LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectDirectorCount" resultType="java.lang.Integer">
+        SELECT count(*) from recycledirector
+    </select>
+    <delete id="deleteOneDirector">
+        delete from recycledirector where recycledirector.id=#{id}
+    </delete>
+    <insert id="revocationDirectors">
+        insert into director (id,name,url) select id,name,url from recycledirector where recycledirector.id=#{id}
+    </insert>
+</mapper>
