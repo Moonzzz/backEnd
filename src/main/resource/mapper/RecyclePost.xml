@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aiit.dao.IRecycleDao">
+
+
+    <!-- 查询所有记录 -->
+    <select id="selectPostAll" resultType="com.aiit.pojo.Post">
+        SELECT * FROM recyclepost LIMIT #{offset},#{limit}
+    </select>
+    <select id="selectPostCount" resultType="java.lang.Integer">
+        SELECT count(id) from recyclepost
+    </select>
+    <delete id="deleteOnePost">
+        delete from recyclepost where recyclepost.id=#{id}
+    </delete>
+    <insert id="revocationPosts">
+        insert into post (id,memberId,title,content,likeNum,datePublished,dateLastModified) select id,memberId,title,content,likeNum,datePublished,dateLastModified from recyclepost where recyclepost.id=#{id}
+    </insert>
+</mapper>
