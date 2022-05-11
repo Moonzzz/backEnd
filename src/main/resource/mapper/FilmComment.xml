@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.aiit.dao.FilmCommentDao">
+    <select id="selectListByFilmId" resultType="com.aiit.pojo.Comment">
+        SELECT `comment`.id     as commentId,
+               `comment`.content,
+               `comment`.likeNum,
+               `comment`.datePublished,
+               member.loginName as memberName,
+               member.imgsrc    as memberImage
+        FROM `comment`
+                 INNER JOIN member ON `comment`.memberId = member.id
+        where filmId = #{filmId}
+        LIMIT #{offset}
+            ,#{pageSize};
+    </select>
+
+    <update id="updateCommentLike" parameterType="java.util.HashMap">
+        UPDATE comment
+        SET likeNum = CASE
+        <foreach collection="argMap" index="id" item="likeNum" separator=" ">
+            WHEN id = #{id} THEN likeNum
+            <choose>
+                <when test="likeNum>0">
+                    +1
+                </when>
+                <when test="!(likeNum>0)">
+                    -1
+                </when>
+            </choose>
+        </foreach>
+        END WHERE id IN
+        <foreach collection="argMap" index="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <insert id="insertComment" parameterType="com.aiit.pojo.Comment">
+        INSERT INTO comment
+        VALUES (null, #{memberId}, #{filmId}, #{content}, 0, #{datePublished})
+    </insert>
+</mapper>

@@ -19,7 +19,7 @@
 <div class="login">
     <div class="message">x-admin2.0-管理员登录</div>
     <div id="darkbannerwrap"></div>
-    <form method="post" class="layui-form" action="http://localhost:8080/backEnd/LoginCheck.action">
+    <form method="post" class="layui-form" action="LoginCheck.action">
         <input name="action" type="hidden" value="AdminLoginCheck" >
         <input name="adminName" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
         <hr class="hr15">
@@ -36,33 +36,6 @@
             var actionname="AdminLoginCheck";
             var name=$("adminName").val();
             var psw=$("adminpsw").val();
-            // layer.msg('玩命卖萌中', function(){
-            //   //关闭后的操作
-            //   });
-            //监听提交
-/*            form.on('submit(login)', function (data) {
-                // alert(888)
-                layer.msg(JSON.stringify(data.field), function () {
-                    //异步登陆
-                    $.ajax({
-                        url: "LoginCheck.action",
-                        method: "POST",
-                        contentType: 'appliction/json',
-                        dataType: "text",
-                        //data:"id="+deList,
-                        data:"action="+actionname+"&adminName="+name+"&adminpsw="+psw,
-                        /!*success: function (msg) {
-                            if (msg == 200) {
-                                layer.msg('删除成功', {icon: 1});
-                                $(".layui-form-checked").not('.header').parents('tr').remove();
-                            } else {
-                                layer.msg('删除失败', {icon: 5, time: 1000});
-                            }
-                        }*!/
-                    });
-                });
-                return false;
-            });*/
         });
     })
 </script>

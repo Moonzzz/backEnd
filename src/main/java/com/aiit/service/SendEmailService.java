@@ -5,12 +5,14 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @auther Mr Tang
  * @Date 2018/12/19 21:11
  * 发送邮件的类
  */
+@Transactional
 @Repository("emailInstance")
 public class SendEmailService {
     public boolean sendEmail(EmailConnecter connecter) {

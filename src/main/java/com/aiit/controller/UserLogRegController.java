@@ -3,6 +3,7 @@ package com.aiit.controller;
 import com.aiit.pojo.Admin;
 import com.aiit.pojo.EmailConnecter;
 import com.aiit.pojo.Member;
+import com.aiit.service.ICommentService;
 import com.aiit.service.IMRegisteService;
 import com.aiit.service.IMemberService;
 import com.aiit.service.SendEmailService;
@@ -21,6 +22,9 @@ import java.io.PrintWriter;
 @RequestMapping("LoginCheck")
 public class UserLogRegController {
     //URL=http://localhost:8080/backEnd/LoinCheck.action?action=AdminLoginCheck
+    @Autowired
+    private ICommentService commentService;
+
     @Autowired
     private SendEmailService emailInstance;
 
@@ -61,7 +65,28 @@ public class UserLogRegController {
         }
         return view;
     }
-
+    @RequestMapping(params = "/findpsw", method = RequestMethod.POST)
+    @ResponseBody
+    public String memberFindPsw( @RequestParam("email") String email){
+        boolean flag=false;
+        String password="";
+        if(mRegisteservice.isExistEmail(email)==1) {
+            password = memberService.findPassword(email);
+            connecter.setLicensekey("dtbhcinorxnihhih");
+            connecter.setFromport("1074356353");
+            connecter.setToport(email);
+            connecter.setTitle("找回密码");
+            String context = "【电影优选】您的密码为" + password + ",工作人员不会向您索取验证码，请勿向任何单位或个人泄露。";
+            connecter.setContext(context);
+            System.out.println(connecter.toString());
+            if(emailInstance.sendEmail(connecter)){
+                return "true";
+            }else{
+                return "false";
+            }
+        }
+        return "noExist";
+    }
     /**
      * 发送验证码
      *
@@ -78,14 +103,16 @@ public class UserLogRegController {
         String state = "500";
         boolean flag = false;
         System.out.println("验证码：" + checkcode);
-        connecter.setLicensekey("apappnalxspoigdf");
+        connecter.setLicensekey("shkhyyamdcocdgfi");
+        connecter.setFromport("3161814915");
+        connecter.setLicensekey("dtbhcinorxnihhih");
         connecter.setFromport("1074356353");
         connecter.setToport(email);
         connecter.setTitle("验证码信息");
-        String context = "【电影优选】您的动态码为" + checkcode + ",工作人员不会向您索取验证码，请勿向任何单位或个人泄露。";
+        String context = "您好，您正在使用您的QQ邮箱申请电影优选会员,您的动态码为" + checkcode + ",工作人员不会向您索取验证码，请勿向任何单位或个人泄露。";
         connecter.setContext(context);
         System.out.println(connecter.toString());
-        //flag = emailInstance.sendEmail(connecter);
+        flag = emailInstance.sendEmail(connecter);
         if (flag) {
             state = "200";
         }
@@ -131,19 +158,22 @@ public class UserLogRegController {
      * @return 注册会员
      */
     @RequestMapping(params = "action=registermember", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
     public void registerMember(
             @RequestParam("email") String email,
             @RequestParam("name") String name,
             @RequestParam("pwd") String pwd,
             PrintWriter out
-    ){
+    ) {
+        String joindate = commentService.getCurrentTime();
         System.out.println("正在调用此registerMember函数");
-        Member member = new Member(name, pwd, email);
+        Member member = new Member(name, pwd, email, joindate);
         System.out.println(member.toString());
         if (memberService.addMember(member)) {
+            //return "200";
             out.flush();
             out.println("<script>" + "alert('恭喜你，注册会员成功~~~');");
-            out.print(" window.history.go(-2);");
+            out.print(" window.history.go(-1);");
             out.print("</script>");
             out.close();
         } else {
@@ -153,5 +183,6 @@ public class UserLogRegController {
             out.print("</script>");
             out.close();
         }
+        //return "500";
     }
 }

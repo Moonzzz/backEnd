@@ -26,7 +26,8 @@
 <body class="login-bg" background="images/bg.png">
 <div class="login-main" style="margin-top: 40px;margin-right: 41px">
     <form method="POST" class="layui-form" action="<%=basePath%>LoginCheck.action">
-        <input type="hidden" name="action" value="registermember">
+       <%--<form class="layui-form" id="form1" method="post" lay-filter="first1">--%>
+       <input type="hidden" name="action" value="registermember">
         <!--输入用户名-->
         <div class="layui-input-inline">
             昵称：
@@ -93,13 +94,11 @@
             </div>
         </div>
         <div class="layui-input-inline login-btn" style="width: 96%">
-            <button disabled="disabled" id="registe" type="submit" lay-submit lay-filter="sub" class="layui-btn">
-                注 册
-            </button>
+            <button id="registe" type="submit" class="layui-btn" lay-submit lay-filter="registesub">注册</button>
         </div>
         <br/>
         <p style="width: 85%">
-            <a href="pages/login.html" class="fl">已有账号？立即登录</a>
+            <a href="filmpage.action?action=movepage&pagename=login" class="fl">已有账号？立即登录</a>
             <a href="javascript:;" class="fr">忘记密码？</a>
         </p>
     </form>
@@ -176,7 +175,6 @@
             $("#btnSendCode").removeAttr("disabled");//启用按钮
             //$("#btnSendCode").val("重新发送验证码");
             $("#registe").attr("disabled", "true");
-
         }
         else {
             curCount--;
@@ -188,27 +186,6 @@
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form;
         var $ = layui.jquery;
-
-        //自定义验证规则
-/*        form.verify({
-            nikename: function (value) {
-                if (value.length < 3) {
-                    return '昵称至少要3个字符~~~';
-                    nameflag = 0;//状态值设为0，信息未填写完整不允许发送验证码
-                }else{
-                    nameflag=1;
-                }
-            }
-            , pass: [/(.+){6,12}$/, '密码必须6到12位']
-            , repass: function (value) {
-                if ($('#pwd').val() != $('#repwd').val()) {
-                    repswflag = 0;
-                    return '两次密码不一致';
-                }else{
-                    repswflag=1;
-                }
-            }
-        });*/
         //为表单添加blur事件
         $('#name').blur(function () {
             var name = $('#name').val();
@@ -316,31 +293,6 @@
                 $('#le3').attr('hidden', 'hidden');
                 $('#ri3').removeAttr('hidden');
             }
-        });
-        //添加表单监听事件
-        form.on('submit(sub)', function () {
-            lay.msg("正在执行提交表单")
-            $.ajax({
-                url: 'LoginCheck.action',
-                type: 'POST',
-                data: {
-                    action: "registermember",
-                    uname: $('#uname').val(),
-                    email: $('#email').val(),
-                    pwd: $('#pwd').val()
-                },
-                dataType: 'text',
-                //判断注册状态
-                success: function (data) {
-                    if (data == 1) {
-                        layer.msg('注册成功')
-                    } else {
-                        layer.msg('注册失败')
-                    }
-                }
-            })
-            //防止页面跳转
-            return false;
         });
     });
 </script>

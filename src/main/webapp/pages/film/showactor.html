@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>显示演员信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js"
+            charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+</head>
+<body>
+<div class="x-nav">
+		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">演示</a>
+			<a> <cite>导航元素</cite></a>
+		</span> <a class="layui-btn layui-btn-small"
+                   style="line-height: 1.6em; margin-top: 3px; float: right"
+                   href="javascript:location.replace(location.href);" title="刷新"> <i
+        class="layui-icon" style="line-height: 30px">ဂ</i></a>
+</div>
+<table class="layui-hide" lay-filter="test" id="author"></table>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        <button class="layui-btn layui-btn-sm" lay-event="bulkdeletion">批量删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use(['table','form','laydate'], function() {
+        var table = layui.table
+            ,form = layui.form
+            ,laydate = layui.laydate;
+        table.render({
+            elem : '#author'
+            , url : '/backEnd/toShowAuthor.action'
+            ,toolbar: '#toolbarDemo'
+            , cellMinWidth: 80
+            ,cols : [ [
+                {
+                    type: 'checkbox'
+                },{
+                    field : 'id',
+                    title : 'ID',
+                    sort : true
+                }, {
+                    field : 'name',
+                    title : '姓名'
+                },{
+                    field: 'url',
+                    title: '详细信息',
+                    templet:"<div><a href=\"movie.douban.com"+"{{d.url}}\" target=\"_Blank\">查看详细信息</div>"
+                } ,{
+                    fixed: 'right',
+                    title:'操作',
+                    toolbar: '#barDemo'
+                }] ]
+            ,page: true
+        });
+
+        //监听工具条
+        table.on('tool(test)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: "/backEnd/delActor.action",
+                        type: "POST",
+                        data: {"id": data.id},
+                        dataType: "text",
+                        success: function (data) {
+                            obj.del();
+                            layer.close(index);
+                            layer.msg("删除成功", {icon: 6});
+                        },
+                        error: function (data) {
+                            layer.msg("删除失败", {icon: 5});
+                        }
+                    });
+                });
+            }
+        });
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                case 'bulkdeletion'://批量删除
+                    bulkdeletion();
+                    break;
+                case 'add'://新增
+                    addAuthor();
+                    break;
+            };
+            //批量删除
+            function bulkdeletion() {
+                var data = checkStatus.data;
+                var ids = new Array();//声明数组
+                for (var i= 0;i<data.length;i++){
+                    ids[i]=data[i].id;
+                }
+                layer.confirm("真的删除这些数据吗？",function (index) {
+                    if (ids.length!=0){
+                        $.ajax({
+                            url:"/backEnd/delActors.action",
+                            type: "POST",
+                            traditional: true,//传数组一定要加的
+                            data: {
+                                "id":ids
+                            },
+                            dataType: "text",
+                            success: function (data) {
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                location.reload();
+                            },
+                            error: function (data) {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        });
+                    }  else{
+                        alert("请选择要删除的数据！");
+                    }
+                });
+            }
+            //新增编剧信息
+            function addAuthor() {
+                layer.open({
+                    title: '新增编剧信息',
+                    type: 1,
+                    area: ['400px', '400px'],
+                    content: $('#add')
+                });
+                form.on('submit(addDirector)',function (obj) {
+                    var name = $('#name').val();
+                    var url = $('#url').val();
+                    layer.confirm('真的增加信息么', function (index) {
+                        $.ajax({
+                            url: "/backEnd/addActor.action",
+                            type:"POST",
+                            dataType:"text",
+                            data:{
+                                "name":name,
+                                "url":url
+                            },
+                            success:function(data){
+                                layer.close(index);
+                                layer.msg("新增成功",{icon: 6});
+                                window.location.reload();
+                            },
+                            error:function (data) {
+                                layer.msg("新增失败", {icon: 5});
+                            }
+                        });
+                    });
+                    return false;
+                });
+            }
+        });
+    });
+</script>
+<!--<%&#45;&#45;修改的弹框&#45;&#45;%>-->
+<form class="layui-form layui-form-pane1" id="add" name="form1" method="post" style="display: none;" lay-filter="first1">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">编剧名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" id="name" lay-verify="required|" required placeholder="请输入电影名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详细信息链接</label>
+        <div class="layui-input-inline">
+            <input type="text" name="url" id="url" lay-verify="required|" placeholder="请输入链接地址" lay-verType="tips" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="add">新增</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

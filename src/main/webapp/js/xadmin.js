@@ -1,3 +1,4 @@
+/*SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/
 $(function () {
     //加载弹出层
     layui.use(['form','element'],
@@ -167,5 +168,14 @@ function x_admin_close(){
     var index = parent.layer.getFrameIndex(window.name);
     parent.layer.close(index);
 }
-
-
+$(function () {
+    $("#search").bind('input propertychange', function () {
+        /*从服务端获取json数据*/
+        let key = $("#search").val();
+        $.getJSON("filmpage/names.action?key="+key, function (data) {
+            $("#search").autocomplete({
+                source: data
+            });
+        });
+    });
+});

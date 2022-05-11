@@ -7,6 +7,12 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="E:/桌面/TankWarDoc" />
+    <option name="OPTION_SCOPE" value="private" />
+    <option name="OTHER_OPTIONS" value="-encoding utf-8 -charset utf-8" />
+    <option name="LOCALE" value="zh_CN" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -14,7 +20,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8.0_251" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

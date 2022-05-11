@@ -2,6 +2,7 @@ package com.aiit.controller;
 
 import com.aiit.pojo.Admin;
 import com.aiit.pojo.Member;
+import com.aiit.service.ICommentService;
 import com.aiit.service.IMemberService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,15 +24,36 @@ import java.util.List;
 @Controller
 public class UserPageController {
     @Autowired
-    IMemberService memberService;
+    Admin admin;
+    @Autowired
+    Member member;
 
-    @RequestMapping(value = "servletTest", method = RequestMethod.GET)
-    public void test(PrintWriter out) {
-        out.print("success!");
+    @Autowired
+    ICommentService commentService;
+
+    @Autowired
+    IMemberService memberService;
+    private List<Member> list;
+
+    @RequestMapping(value = "searchMembers", method = RequestMethod.POST)
+    public ModelAndView test(@RequestParam("start") String start,
+                             @RequestParam("end") String end,
+                             @RequestParam("username") String username) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (start.equalsIgnoreCase("") || end.equalsIgnoreCase("")) {
+            list = memberService.selectMembersName(username);
+        } else {
+            list = memberService.selectMembersByDate_Name(start, end, username);
+        }
+        modelAndView.addObject("mList", list);
+        modelAndView.addObject("tp", list.size() % 5 == 0 ? list.size() / 5 : list.size() / 5 + 1);
+        modelAndView.setViewName("member/MemberPage");
+        return modelAndView;
     }
 
     /**
-     *会员管理页面跳转中心
+     * 会员管理页面跳转中心
+     *
      * @param pagename
      * @param request
      * @return
@@ -44,25 +66,25 @@ public class UserPageController {
                 modelAndView.setViewName("member/MemberAdd");
                 break;
             case "member":
-                List<Member> list = memberService.showAllMembers();
+                list = memberService.showAllMembers();
                 System.out.println(list.toString());
                 modelAndView.addObject("mList", list);
                 modelAndView.addObject("tp", list.size() % 5 == 0 ? list.size() / 5 : list.size() / 5 + 1);
                 modelAndView.setViewName("member/MemberPage");
                 break;
             case "movepage":
-                List<Member> list1 = memberService.showAllMembers();
+                list = memberService.showAllMembers();
                 String pagenum = request.getParameter("pc");
                 System.out.println("要跳转的页数：" + pagenum);
-                modelAndView.addObject("mList", list1);
-                modelAndView.addObject("tp", list1.size() % 5 == 0 ? list1.size() / 5 : list1.size() / 5 + 1);
+                modelAndView.addObject("mList", list);
+                modelAndView.addObject("tp", list.size() % 5 == 0 ? list.size() / 5 : list.size() / 5 + 1);
                 modelAndView.addObject("pc", pagenum);
                 modelAndView.setViewName("member/MemberPage");
                 break;
             case "update":
                 String id = request.getParameter("id");
-                System.out.println("待修改会员id为"+id);
-                Member member = memberService.searchMemberById(id);
+                System.out.println("待修改会员id为" + id);
+                member = memberService.searchMemberById(id);
                 modelAndView.addObject("item", member);
                 modelAndView.setViewName("member/MemberUpdate");
                 break;
@@ -78,6 +100,7 @@ public class UserPageController {
 
     /**
      * 管理员页面跳转中心
+     *
      * @param pagename
      * @param request
      * @return
@@ -88,7 +111,7 @@ public class UserPageController {
         switch (pagename) {
             case "update":
                 String name = request.getParameter("name");
-                Admin admin = memberService.searchAdminByName(name);
+                admin = memberService.searchAdminByName(name);
                 view.addObject("item", admin);
                 view.setViewName("admin/AdminUpdate");
                 break;
@@ -98,6 +121,7 @@ public class UserPageController {
 
     /**
      * 添加会员的动作
+     *
      * @param name
      * @param email
      * @param pass
@@ -111,9 +135,10 @@ public class UserPageController {
             @RequestParam("pass") String pass,
             PrintWriter out
     ) throws IOException {
+        String joindate = commentService.getCurrentTime();
         System.out.println("我正在被调用");
         boolean flag = false;
-        Member member = new Member(name, pass, email);
+        member = new Member(name, pass, email, joindate);
         if (memberService.isExistMember(member.getLoginName()) == 0) {
             flag = memberService.addMember(member);
         } else {
@@ -136,6 +161,7 @@ public class UserPageController {
 
     /**
      * 修改管理员信息的动作
+     *
      * @param id
      * @param name
      * @param pass
@@ -148,7 +174,7 @@ public class UserPageController {
             @RequestParam("pass") String pass,
             PrintWriter out
     ) {
-        Admin admin = new Admin(id, name, pass);
+        admin = new Admin(id, name, pass);
         boolean flag = false;
         flag = memberService.upDateAdmin(admin);
         if (!flag) {
@@ -168,7 +194,8 @@ public class UserPageController {
 
     /**
      * 修改会员信息的动作
-     * @param id
+     *
+     * @param mid
      * @param name
      * @param email
      * @param pass
@@ -180,7 +207,7 @@ public class UserPageController {
      */
     @RequestMapping("member/update")
     public void updateMember(
-            @RequestParam("memberid") String id,
+            @RequestParam("memberid") String mid,
             @RequestParam("name") String name,
             @RequestParam("email") String email,
             @RequestParam("pass") String pass,
@@ -189,10 +216,9 @@ public class UserPageController {
             @RequestParam("birthday") String birthday,
             PrintWriter out
     ) throws IOException {
-        System.out.println("我正在被调用");
+        System.out.println("正在修改会员信息");
         boolean flag = false;
-        int mid = Integer.parseInt(id);
-        Member member = new Member(mid, name, pass, sex, phonenum, email, birthday);
+        member = new Member(mid, name, pass, sex, phonenum, email, birthday);
         //如果用户名没有修改，则直接修改信息，无需判断修改后的用户名是否存在
         if (memberService.returnNameById(mid).equals(name)) {
             flag = memberService.upDateMember(member);
@@ -221,7 +247,7 @@ public class UserPageController {
 
     @RequestMapping(value = "member/delect", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String deleteMemberById(int memberid) {
+    public String deleteMemberById(String memberid) {
         String statunum = "500";
         if (memberService.deleteMemberById(memberid)) {
             statunum = "200";
@@ -245,16 +271,5 @@ public class UserPageController {
             statunum = "200";
         }
         return statunum;
-    }
-
-    @RequestMapping(value = "/names", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<String> autoComplete() {
-        List<String> list = new ArrayList<String>();
-        list.add("java");
-        list.add("mybatis");
-        list.add("myEclipse");
-        list.add("solution");
-        return list;
     }
 }

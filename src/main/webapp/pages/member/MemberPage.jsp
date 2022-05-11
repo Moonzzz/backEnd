@@ -25,24 +25,13 @@
     <script type="text/javascript" src="js/xadmin.js"></script>
 </head>
 <body>
-<div class="x-nav">
-      <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
-        <a>
-          <cite>导航元素</cite></a>
-      </span>
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
-       href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <form method="POST" action="searchMembers.action" class="layui-form layui-col-md12 x-so">
             <input class="layui-input" placeholder="开始日" name="start" id="start">
             <input class="layui-input" placeholder="截止日" name="end" id="end">
             <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+            <button class="layui-btn"type="submit"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
@@ -194,7 +183,6 @@
                 method: "GET",
                 contentType: 'appliction/json',
                 dataType: "json",
-                //data:"id="+deList,
                 data: {"ids": json},
                 success: function (msg) {
                     if (msg == 200) {

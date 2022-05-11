@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.SQLClientInfoException;
@@ -14,31 +15,24 @@ import java.sql.SQLClientInfoException;
  * @auther Mr Tang
  * @Date 2018/12/21 22:13
  */
-@Service("mRegisteservice")
+@Transactional
+@Service("mRegisteService")
 public class MRegisteServiceImp implements IMRegisteService {
+    private final IUsersDao usersDao;
+
     @Autowired
-    SqlSessionFactory sqlSessionFactory;
+    public MRegisteServiceImp(IUsersDao usersDao) {
+        this.usersDao = usersDao;
+    }
 
     @Override
     public int isExistEmail(String email) {
-        int count = 0;
-        SqlSession session = sqlSessionFactory.openSession(true);
-        IUsersDao iuser = session.getMapper(IUsersDao.class);
-        count = iuser.isExistEmail(email);
-        return count;
+       return usersDao.isExistEmail(email);
     }
 
     @Override
     public boolean AdminLoginCheck(Admin admin) {
-        boolean flag = false;
-        try {
-            SqlSession session = sqlSessionFactory.openSession(true);
-            IUsersDao iuser = session.getMapper(IUsersDao.class);
-            flag = iuser.AdminLoginCheck(admin);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        return flag;
+        return usersDao.AdminLoginCheck(admin);
     }
 
 }

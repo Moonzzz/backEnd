@@ -2,10 +2,10 @@ package com.aiit.pojo;
 
 import org.springframework.stereotype.Component;
 
-@Component(value = "member")
+@Component("member")
 public class Member {
 
-    private long id;
+    private String id;
     private String loginName;
     private String password;
     private String sex;
@@ -13,16 +13,18 @@ public class Member {
     private String email;
     private String birthday;
     private String joindate;
-
+    private String imgsrc;
     public Member() {
     }
 
-    public Member(String loginName, String password, String email) {
+    public Member(String loginName, String password, String email,String joindate) {
         this.loginName = loginName;
         this.password = password;
         this.email = email;
+        this.joindate=joindate;
     }
 
+/*
     public Member(String loginName, String password, String sex, String phonenum, String email, String birthday, String joindate) {
         this.loginName = loginName;
         this.password = password;
@@ -32,8 +34,9 @@ public class Member {
         this.birthday = birthday;
         this.joindate = joindate;
     }
+*/
 
-    public Member(int id, String loginName, String password, String sex, String phonenum, String email, String birthday) {
+    public Member(String  id, String loginName, String password, String sex, String phonenum, String email, String birthday) {
         this.id = id;
         this.loginName = loginName;
         this.password = password;
@@ -43,11 +46,30 @@ public class Member {
         this.birthday = birthday;
     }
 
-    public long getId() {
+    public Member(String id, String loginName, String password, String sex, String phonenum, String email, String birthday,String imgsrc) {
+        this.id = id;
+        this.loginName = loginName;
+        this.password = password;
+        this.sex = sex;
+        this.phonenum = phonenum;
+        this.email = email;
+        this.birthday = birthday;
+        this.imgsrc = imgsrc;
+    }
+
+    public String getImgsrc() {
+        return imgsrc;
+    }
+
+    public void setImgsrc(String imgsrc) {
+        this.imgsrc = imgsrc;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

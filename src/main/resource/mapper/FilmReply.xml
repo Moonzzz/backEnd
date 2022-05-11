@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.aiit.dao.FilmReplyDao">
+    <select id="selectListByPostId" resultType="com.aiit.pojo.Reply">
+        SELECT reply.id         as replyId,
+               reply.content,
+               reply.likeNum,
+               reply.datePublished,
+               member.loginName as memberName,
+               member.imgsrc    as memberImage
+        FROM reply
+                 INNER JOIN member ON reply.memberId = member.id
+        where postId = #{postId}
+        LIMIT #{offset}
+            ,#{pageSize};
+    </select>
+
+    <update id="updateReplyLike" parameterType="java.util.HashMap">
+        UPDATE reply
+        SET likeNum = CASE
+        <foreach collection="argMap" index="id" item="likeNum" separator=" ">
+            WHEN id = #{id} THEN likeNum
+            <choose>
+                <when test="likeNum>0">
+                    +1
+                </when>
+                <when test="!(likeNum>0)">
+                    -1
+                </when>
+            </choose>
+        </foreach>
+        END WHERE id IN
+        <foreach collection="argMap" index="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <insert id="insertReply" parameterType="com.aiit.pojo.Reply">
+        INSERT INTO reply
+        VALUES (null, #{postId}, #{filmId}, #{memberId}, #{content}, 0, #{datePublished})
+    </insert>
+</mapper>
